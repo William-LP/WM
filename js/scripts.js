@@ -143,16 +143,13 @@ $('#payementModal').on('show.bs.modal', function (event) {
     ].join("\n");
 
     switch (paiementMethod) {
-        case "Carte bancaire":
-            html = cb
-            break;
         case "Chèque":
             html = cheque
             break;
         case "Virement":
             html = virement
             break;
-        case "PayPal":
+        case "PayPal / Carte bancaire":
             html = paypal
             break;
         case "Espèces":
@@ -166,8 +163,7 @@ $('#payementModal').on('show.bs.modal', function (event) {
 
     modal.find('.modal-description').html(html)
 
-    if (paiementMethod == "PayPal") {
-        console.log("paypal")
+    if (paiementMethod == "PayPal / Carte bancaire") {
         paypal_sdk.Buttons({
             style: {
                 shape: 'pill',
@@ -180,14 +176,14 @@ $('#payementModal').on('show.bs.modal', function (event) {
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: '250'
+                            value: '1'
                         }
                     }]
                 });
             },
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
-                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                    alert('Merci ' + details.payer.name.given_name + ', nous allons rapidement prendre contact avec vous!');
                 });
             }
         }).render('#paypal-button-container');
